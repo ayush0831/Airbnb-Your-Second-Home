@@ -8,9 +8,9 @@ module.exports.signup = async(req,res) => {
     try{
         let {username,email,password} = req.body;
         const newUser = new User({email,username});
-        const registeredUser = await User.register(newUser,password);
+        const registeredUser = await User.register(newUser,password);      // special method from passport-local-mongoose that hashes password and save user in db
         console.log(registeredUser);
-        req.login(registeredUser,(err) => {
+        req.login(registeredUser,(err) => {                  // automatically logins the user they don't need to sign in again
             if(err){
                 return next(err);
             }
@@ -36,7 +36,7 @@ module.exports.login = async(req,res) =>{
 };
 
 module.exports.logout = (req,res,next) => {
-    req.logout((err) => {
+    req.logout((err) => {               // login and logout are provided by passport
         if(err){
            return next(err);
         }

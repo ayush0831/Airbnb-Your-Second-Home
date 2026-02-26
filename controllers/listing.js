@@ -13,7 +13,7 @@ module.exports.renderNewform = (req,res) => {
 module.exports.showListing = async(req,res) => {
   let {id} = req.params;
   const listing = await Listing.findById(id)
-  .populate({
+  .populate({            // using populate shows the actual docs() it refers to , eg: without populate it show only owner objectId not it's actual id and name 
     path:"reviews",
     populate: {
     path:"author"
@@ -96,7 +96,7 @@ module.exports.renderEditform = async(req,res) => {
     return res.redirect("/listings");
   }
   let originalImageurl = listing.image.url;
-  originalImageurl = originalImageurl.replace("/upload","/upload/w_250");
+  originalImageurl = originalImageurl.replace("/upload","/upload/w_250");      // Cloudinary allows tweaking the url
   res.render("listings/edit.ejs",{listing,originalImageurl});
 };
 

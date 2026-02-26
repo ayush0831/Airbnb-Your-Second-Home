@@ -12,12 +12,11 @@ const {storage} = require("../cloudConfig.js");
 const upload = multer({ storage });
 
 
-
 //Index Route
 router.route("/")
 .get(wrapAsync(listingController.index))
 .post(isLoggedIn,
-    upload.single('listing[image]'),
+    upload.single('listing[image]'),    // expects only one file so user's uploaded image file will be save in class listing[image] 
     validateListing,
     wrapAsync(listingController.createListing)
 );

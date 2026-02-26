@@ -1,4 +1,4 @@
-if(process.env.NODE_ENV != "production"){
+if(process.env.NODE_ENV != "production"){       //Only when not in production ,Prevents accidentally leaking secrets on production servers.
   require('dotenv').config();
 }
 // console.log(process.env.SECRET);
@@ -17,7 +17,7 @@ const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
-
+ 
 const listingRouter = require("./routes/listing.js");
 const reviewRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");  
@@ -54,7 +54,7 @@ const store = MongoStore.create({
   touchAfter: 24*3600,
 });
 store.on("error",() => {
-  console.log("Error in Session Store",err);
+  console.log("Error in Session Store",err);   
 });
 
 const sessionOptions = {
@@ -79,11 +79,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 
-passport.serializeUser(User.serializeUser());           // serialize(store) the user into session
-passport.deserializeUser(User.deserializeUser());
-
+passport.serializeUser(User.serializeUser());           // serialize(store) the user(id) into session
+passport.deserializeUser(User.deserializeUser());        //deserialization fetches user from DB
+ 
 app.use((req,res,next) => {
-  res.locals.success = req.flash("success");
+  res.locals.success = req.flash("success");             //Makes success, error, and currUser available in all EJS views without explicitly passing them every time 
   res.locals.error = req.flash("error");
   res.locals.currUser = req.user;
   next();

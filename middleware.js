@@ -5,7 +5,7 @@ const {listingSchema,reviewSchema} = require("./schema.js");
 
 module.exports.isLoggedIn = (req,res,next) => {
   console.log(req.user);
-    if(!req.isAuthenticated()){
+    if(!req.isAuthenticated()){                     // we are using passport local mongoose 
       req.session.redirectUrl = req.originalUrl;
     req.flash("error","You must be logged in to create listing");
     return res.redirect("/login");
@@ -30,7 +30,7 @@ module.exports.isOwner = async(req,res,next) => {
   next();
 };
 
-module.exports.validateListing = (req,res,next) => {
+module.exports.validateListing = (req,res,next) => { 
   let {error} = listingSchema.validate(req.body);
    
   if(error){
